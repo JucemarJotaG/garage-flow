@@ -14,16 +14,433 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      clientes: {
+        Row: {
+          cidade: string | null
+          created_at: string
+          created_by: string | null
+          documento: string | null
+          email: string | null
+          endereco: string | null
+          estado: string | null
+          id: string
+          nome: string
+          observacoes: string | null
+          telefone: string | null
+          updated_at: string
+        }
+        Insert: {
+          cidade?: string | null
+          created_at?: string
+          created_by?: string | null
+          documento?: string | null
+          email?: string | null
+          endereco?: string | null
+          estado?: string | null
+          id?: string
+          nome: string
+          observacoes?: string | null
+          telefone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cidade?: string | null
+          created_at?: string
+          created_by?: string | null
+          documento?: string | null
+          email?: string | null
+          endereco?: string | null
+          estado?: string | null
+          id?: string
+          nome?: string
+          observacoes?: string | null
+          telefone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      configuracoes: {
+        Row: {
+          empresa_documento: string | null
+          empresa_endereco: string | null
+          empresa_nome: string
+          empresa_telefone: string | null
+          entrada_por_voz: boolean
+          id: string
+          ramo: string
+          template_orcamento: string
+          template_status: string
+          updated_at: string
+          whatsapp_ativo: boolean
+        }
+        Insert: {
+          empresa_documento?: string | null
+          empresa_endereco?: string | null
+          empresa_nome?: string
+          empresa_telefone?: string | null
+          entrada_por_voz?: boolean
+          id?: string
+          ramo?: string
+          template_orcamento?: string
+          template_status?: string
+          updated_at?: string
+          whatsapp_ativo?: boolean
+        }
+        Update: {
+          empresa_documento?: string | null
+          empresa_endereco?: string | null
+          empresa_nome?: string
+          empresa_telefone?: string | null
+          entrada_por_voz?: boolean
+          id?: string
+          ramo?: string
+          template_orcamento?: string
+          template_status?: string
+          updated_at?: string
+          whatsapp_ativo?: boolean
+        }
+        Relationships: []
+      }
+      ordens_servico: {
+        Row: {
+          cliente_id: string | null
+          created_at: string
+          created_by: string | null
+          desconto: number
+          descricao: string | null
+          forma_pagamento: string | null
+          id: string
+          km_entrada: number | null
+          laudo: string | null
+          numero: number
+          observacoes: string | null
+          pago: boolean
+          previsao_entrega: string | null
+          protocolo: string
+          senha_acesso: string
+          status: Database["public"]["Enums"]["os_status"]
+          tipo_servico: string | null
+          updated_at: string
+          veiculo_id: string | null
+        }
+        Insert: {
+          cliente_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          desconto?: number
+          descricao?: string | null
+          forma_pagamento?: string | null
+          id?: string
+          km_entrada?: number | null
+          laudo?: string | null
+          numero?: number
+          observacoes?: string | null
+          pago?: boolean
+          previsao_entrega?: string | null
+          protocolo: string
+          senha_acesso: string
+          status?: Database["public"]["Enums"]["os_status"]
+          tipo_servico?: string | null
+          updated_at?: string
+          veiculo_id?: string | null
+        }
+        Update: {
+          cliente_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          desconto?: number
+          descricao?: string | null
+          forma_pagamento?: string | null
+          id?: string
+          km_entrada?: number | null
+          laudo?: string | null
+          numero?: number
+          observacoes?: string | null
+          pago?: boolean
+          previsao_entrega?: string | null
+          protocolo?: string
+          senha_acesso?: string
+          status?: Database["public"]["Enums"]["os_status"]
+          tipo_servico?: string | null
+          updated_at?: string
+          veiculo_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ordens_servico_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ordens_servico_veiculo_id_fkey"
+            columns: ["veiculo_id"]
+            isOneToOne: false
+            referencedRelation: "veiculos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      os_fotos: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          fase: Database["public"]["Enums"]["foto_fase"]
+          id: string
+          legenda: string | null
+          os_id: string
+          storage_path: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          fase?: Database["public"]["Enums"]["foto_fase"]
+          id?: string
+          legenda?: string | null
+          os_id: string
+          storage_path: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          fase?: Database["public"]["Enums"]["foto_fase"]
+          id?: string
+          legenda?: string | null
+          os_id?: string
+          storage_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "os_fotos_os_id_fkey"
+            columns: ["os_id"]
+            isOneToOne: false
+            referencedRelation: "ordens_servico"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      os_itens: {
+        Row: {
+          created_at: string
+          descricao: string
+          id: string
+          local_peca: string | null
+          os_id: string
+          quantidade: number
+          tipo: Database["public"]["Enums"]["item_tipo"]
+          valor_unitario: number
+        }
+        Insert: {
+          created_at?: string
+          descricao: string
+          id?: string
+          local_peca?: string | null
+          os_id: string
+          quantidade?: number
+          tipo?: Database["public"]["Enums"]["item_tipo"]
+          valor_unitario?: number
+        }
+        Update: {
+          created_at?: string
+          descricao?: string
+          id?: string
+          local_peca?: string | null
+          os_id?: string
+          quantidade?: number
+          tipo?: Database["public"]["Enums"]["item_tipo"]
+          valor_unitario?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "os_itens_os_id_fkey"
+            columns: ["os_id"]
+            isOneToOne: false
+            referencedRelation: "ordens_servico"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      os_status_historico: {
+        Row: {
+          comentario: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          notificado_whatsapp: boolean
+          os_id: string
+          status: Database["public"]["Enums"]["os_status"]
+        }
+        Insert: {
+          comentario?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notificado_whatsapp?: boolean
+          os_id: string
+          status: Database["public"]["Enums"]["os_status"]
+        }
+        Update: {
+          comentario?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notificado_whatsapp?: boolean
+          os_id?: string
+          status?: Database["public"]["Enums"]["os_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "os_status_historico_os_id_fkey"
+            columns: ["os_id"]
+            isOneToOne: false
+            referencedRelation: "ordens_servico"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          email: string | null
+          id: string
+          nome: string
+          telefone: string | null
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          email?: string | null
+          id: string
+          nome?: string
+          telefone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          email?: string | null
+          id?: string
+          nome?: string
+          telefone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      veiculos: {
+        Row: {
+          ano: number | null
+          chassi: string | null
+          cliente_id: string | null
+          cor: string | null
+          created_at: string
+          id: string
+          km: number | null
+          marca: string | null
+          modelo: string | null
+          observacoes: string | null
+          placa: string
+          updated_at: string
+        }
+        Insert: {
+          ano?: number | null
+          chassi?: string | null
+          cliente_id?: string | null
+          cor?: string | null
+          created_at?: string
+          id?: string
+          km?: number | null
+          marca?: string | null
+          modelo?: string | null
+          observacoes?: string | null
+          placa: string
+          updated_at?: string
+        }
+        Update: {
+          ano?: number | null
+          chassi?: string | null
+          cliente_id?: string | null
+          cor?: string | null
+          created_at?: string
+          id?: string
+          km?: number | null
+          marca?: string | null
+          modelo?: string | null
+          observacoes?: string | null
+          placa?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "veiculos_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      can_write: { Args: { _user_id: string }; Returns: boolean }
+      claim_admin: { Args: never; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_staff: { Args: { _user_id: string }; Returns: boolean }
+      portal_consultar: {
+        Args: { _protocolo: string; _senha: string }
+        Returns: Json
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role:
+        | "admin"
+        | "financeiro"
+        | "auditoria"
+        | "atendente"
+        | "tecnico"
+        | "recepcao"
+      foto_fase: "antes" | "durante" | "depois"
+      item_tipo: "servico" | "produto"
+      os_status:
+        | "orcamento"
+        | "aprovado"
+        | "em_execucao"
+        | "aguardando_peca"
+        | "pronto"
+        | "entregue"
+        | "cancelado"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +567,26 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: [
+        "admin",
+        "financeiro",
+        "auditoria",
+        "atendente",
+        "tecnico",
+        "recepcao",
+      ],
+      foto_fase: ["antes", "durante", "depois"],
+      item_tipo: ["servico", "produto"],
+      os_status: [
+        "orcamento",
+        "aprovado",
+        "em_execucao",
+        "aguardando_peca",
+        "pronto",
+        "entregue",
+        "cancelado",
+      ],
+    },
   },
 } as const
