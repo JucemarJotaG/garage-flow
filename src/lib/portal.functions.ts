@@ -6,14 +6,52 @@ const schema = z.object({
   senha: z.string().min(3).max(20),
 });
 
+export type PortalFoto = {
+  fase: string;
+  storage_path: string;
+  legenda: string | null;
+  url?: string | undefined;
+};
+
 export type PortalResultado = {
-  erro?: string;
-  os?: Record<string, unknown>;
-  cliente?: { nome: string } | null;
-  veiculo?: Record<string, unknown> | null;
-  itens?: Array<Record<string, unknown>>;
-  historico?: Array<Record<string, unknown>>;
-  fotos?: Array<{ fase: string; storage_path: string; legenda: string | null; url?: string }>;
+  erro?: string | undefined;
+  os?:
+    | {
+        numero: number;
+        protocolo: string;
+        status: string;
+        descricao: string | null;
+        laudo: string | null;
+        previsao_entrega: string | null;
+        desconto: string | number | null;
+        created_at: string;
+        tipo_servico: string | null;
+      }
+    | undefined;
+  cliente?: { nome: string } | null | undefined;
+  veiculo?:
+    | {
+        placa: string;
+        marca: string | null;
+        modelo: string | null;
+        cor: string | null;
+        ano: number | null;
+      }
+    | null
+    | undefined;
+  itens?:
+    | Array<{
+        tipo: string;
+        descricao: string;
+        local_peca: string | null;
+        quantidade: string | number;
+        valor_unitario: string | number;
+      }>
+    | undefined;
+  historico?:
+    | Array<{ status: string; comentario: string | null; created_at: string }>
+    | undefined;
+  fotos?: PortalFoto[] | undefined;
 };
 
 export const consultarPortal = createServerFn({ method: "POST" })
@@ -34,13 +72,14 @@ export const consultarPortal = createServerFn({ method: "POST" })
     const res = (resultado ?? {}) as PortalResultado;
     if (res.erro) return { erro: res.erro };
 
-    const fotos = res.fotos ?? [];
+    const fotos: PortalFoto[] = res.fotos ?? [];
+    const comUrl: PortalFoto[] = [];
     for (const foto of fotos) {
       const { data: signed } = await supabaseAdmin.storage
         .from("os-fotos")
         .createSignedUrl(foto.storage_path, 3600);
-      foto.url = signed?.signedUrl;
+      comUrl.push({ ...foto, url: signed?.signedUrl ?? undefined });
     }
 
-    return { ...res, fotos };
+    return { ...res, fotos: comUrl };
   });
